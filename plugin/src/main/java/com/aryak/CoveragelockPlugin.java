@@ -15,15 +15,20 @@ public class CoveragelockPlugin implements Plugin<Project> {
         // creating an extension to allow user to configure the plugin
         CoverageLock extension = project.getExtensions().create("coverageLock", CoverageLock.class);
 
-
-        // setting meaningful defaults
-
+        // setting meaningful defaults for the plugin
+        extension.setCi(false);
+        extension.setGoal(0.80f);
+        extension.setResultFile(project.getLayout()
+                .getProjectDirectory().file("coverage-lock.txt")
+                .getAsFile()); // stores coverage in this auto created file
+        extension.setJacocoMetric("LINE");
 
         System.out.println("CoverageLock extension registered!");
         System.out.println("Object: " + extension);
         System.out.println("Goal: " + extension.getGoal());
         System.out.println("CI: " + extension.isCi());
         System.out.println("File: " + extension.getResultFile().getAbsolutePath());
+
         // Register a task
         project.getTasks().register("greeting", task -> {
             task.doLast(s -> System.out.println("Hello from my cool plugin!"));
