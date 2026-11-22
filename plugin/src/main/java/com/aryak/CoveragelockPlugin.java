@@ -3,19 +3,25 @@
  */
 package com.aryak;
 
+import com.aryak.extensions.CoverageLockExtension;
+import com.aryak.tasks.CoverageLockTask;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
+
+import java.io.File;
 
 import static com.aryak.CoverageDefaults.*;
 
 /**
- * A simple 'hello world' plugin.
+ * The main plugin skeleton
  */
 public class CoveragelockPlugin implements Plugin<Project> {
+
     public void apply(Project project) {
 
         // creating an extension to allow user to configure the plugin
-        CoverageLock extension = project.getExtensions().create("coverageLock", CoverageLock.class);
+        CoverageLockExtension extension = project.getExtensions()
+                .create("coverageLock", CoverageLockExtension.class);
 
         // setting meaningful defaults for the plugin
         extension.setCi(false);
@@ -24,16 +30,18 @@ public class CoveragelockPlugin implements Plugin<Project> {
                 .getProjectDirectory().file(COVERAGE_LOCK_FILE)
                 .getAsFile()); // stores coverage in this auto created file
         extension.setJacocoMetric(JACOCO_DEFAULT_METRIC);
-
         System.out.println("CoverageLock extension registered!");
-        System.out.println("Object: " + extension);
-        System.out.println("Goal: " + extension.getGoal());
-        System.out.println("CI: " + extension.isCi());
-        System.out.println("File: " + extension.getResultFile().getAbsolutePath());
 
-        // Register a task
-        project.getTasks().register("greeting", task -> {
-            task.doLast(s -> System.out.println("Hello from my cool plugin!"));
+        // Register a task in the plugin
+        project.getTasks().register("coverageLock", CoverageLockTask.class, task -> {
+            task.setDescription("Validates JaCoCo code coverage");
+            task.setGoal(extension.getGoal());
+
+            File jacocoXmlReport = project.getLayout()
+                    .getBuildDirectory().file("report.xml").get().getAsFile();
+
+            task.setJacocoReportXmlFile(jacocoXmlReport); //this report will be created by another task
+            task.setCoverageLockFile(project.file("coverage-lock.txt"));
         });
     }
 }

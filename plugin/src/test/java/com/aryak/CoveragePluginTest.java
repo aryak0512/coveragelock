@@ -3,6 +3,7 @@
  */
 package com.aryak;
 
+import com.aryak.extensions.CoverageLockExtension;
 import org.gradle.api.Project;
 import org.gradle.testfixtures.ProjectBuilder;
 import org.junit.jupiter.api.DisplayName;
@@ -14,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
- * A simple unit test for the 'org.example.greeting' plugin.
+ * A simple unit test for the '' plugin.
  */
 class CoveragePluginTest {
 
@@ -25,7 +26,7 @@ class CoveragePluginTest {
         project.getPlugins().apply("com.aryak.coveragelock");
 
         // Verify the result
-        assertNotNull(project.getTasks().findByName("greeting"));
+        assertNotNull(project.getTasks().findByName("coverageLock"));
     }
 
     @Test
@@ -47,7 +48,7 @@ class CoveragePluginTest {
         project.getPlugins().apply("com.aryak.coveragelock");
 
         // Verify the result
-        CoverageLock extension = (CoverageLock) project.getExtensions().getByName("coverageLock");
+        CoverageLockExtension extension = (CoverageLockExtension) project.getExtensions().getByName("coverageLock");
         assertEquals(GOAL, extension.getGoal());
         assertEquals(COVERAGE_LOCK_FILE, extension.getResultFile().getName());
     }

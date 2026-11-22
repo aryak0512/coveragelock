@@ -1,8 +1,8 @@
-package com.aryak;
+package com.aryak.extensions;
 
 import java.io.File;
 
-public class CoverageLock {
+public class CoverageLockExtension {
 
     private float goal;
     private boolean isCi;

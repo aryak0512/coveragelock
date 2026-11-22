@@ -3,21 +3,23 @@
  */
 package com.aryak;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.Writer;
-import java.io.FileWriter;
-import java.nio.file.Files;
-import org.gradle.testkit.runner.GradleRunner;
 import org.gradle.testkit.runner.BuildResult;
+import org.gradle.testkit.runner.GradleRunner;
+import org.gradle.testkit.runner.TaskOutcome;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
-import static org.junit.jupiter.api.Assertions.*;
+
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Writer;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * A simple functional test for the 'org.example.greeting' plugin.
  */
-class CoveragelockPluginFunctionalTest {
+class CoveragePluginFunctionalTest {
     @TempDir
     File projectDir;
 
@@ -29,27 +31,34 @@ class CoveragelockPluginFunctionalTest {
         return new File(projectDir, "settings.gradle");
     }
 
-    @Test void canRunTask() throws IOException {
+    @Test
+    void canRunTask() throws IOException {
         writeString(getSettingsFile(), "");
         writeString(getBuildFile(),
-            "plugins {" +
-            "  id('com.aryak.coveragelock')" +
-            "}");
+                "plugins {" +
+                        "  id('com.aryak.coveragelock')" +
+                        "}");
+
+        // Create the input file expected by CoverageLockTask
+        File buildDir = new File(projectDir, "build");
+        buildDir.mkdirs();
+        File reportFile = new File(buildDir, "report.xml");
+        reportFile.createNewFile();
 
         // Run the build
         GradleRunner runner = GradleRunner.create();
         runner.forwardOutput();
         runner.withPluginClasspath();
-        runner.withArguments("greeting");
+        runner.withArguments("coverageLock");
         runner.withProjectDir(projectDir);
         BuildResult result = runner.build();
 
         // Verify the result
-        assertTrue(result.getOutput().contains("Hello from my cool plugin!"));
+        assertEquals(TaskOutcome.SUCCESS, result.task(":coverageLock").getOutcome());
     }
 
     private void writeString(File file, String string) throws IOException {
-        try (Writer writer = new FileWriter(file)) {
+        try ( Writer writer = new FileWriter(file) ) {
             writer.write(string);
         }
     }
