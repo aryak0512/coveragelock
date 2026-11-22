@@ -6,6 +6,8 @@ package com.aryak;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
 
+import static com.aryak.CoverageDefaults.*;
+
 /**
  * A simple 'hello world' plugin.
  */
@@ -17,11 +19,11 @@ public class CoveragelockPlugin implements Plugin<Project> {
 
         // setting meaningful defaults for the plugin
         extension.setCi(false);
-        extension.setGoal(0.80f);
+        extension.setGoal(GOAL);
         extension.setResultFile(project.getLayout()
-                .getProjectDirectory().file("coverage-lock.txt")
+                .getProjectDirectory().file(COVERAGE_LOCK_FILE)
                 .getAsFile()); // stores coverage in this auto created file
-        extension.setJacocoMetric("LINE");
+        extension.setJacocoMetric(JACOCO_DEFAULT_METRIC);
 
         System.out.println("CoverageLock extension registered!");
         System.out.println("Object: " + extension);
