@@ -3,14 +3,27 @@
  */
 package com.aryak;
 
-import org.gradle.api.Project;
 import org.gradle.api.Plugin;
+import org.gradle.api.Project;
 
 /**
  * A simple 'hello world' plugin.
  */
 public class CoveragelockPlugin implements Plugin<Project> {
     public void apply(Project project) {
+
+        // creating an extension to allow user to configure the plugin
+        CoverageLock extension = project.getExtensions().create("coverageLock", CoverageLock.class);
+
+
+        // setting meaningful defaults
+
+
+        System.out.println("CoverageLock extension registered!");
+        System.out.println("Object: " + extension);
+        System.out.println("Goal: " + extension.getGoal());
+        System.out.println("CI: " + extension.isCi());
+        System.out.println("File: " + extension.getResultFile().getAbsolutePath());
         // Register a task
         project.getTasks().register("greeting", task -> {
             task.doLast(s -> System.out.println("Hello from my cool plugin!"));
