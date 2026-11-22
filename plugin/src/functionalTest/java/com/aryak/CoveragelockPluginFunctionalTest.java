@@ -33,7 +33,7 @@ class CoveragelockPluginFunctionalTest {
         writeString(getSettingsFile(), "");
         writeString(getBuildFile(),
             "plugins {" +
-            "  id('org.example.greeting')" +
+            "  id('com.aryak.coveragelock')" +
             "}");
 
         // Run the build
@@ -45,7 +45,7 @@ class CoveragelockPluginFunctionalTest {
         BuildResult result = runner.build();
 
         // Verify the result
-        assertTrue(result.getOutput().contains("Hello from plugin 'org.example.greeting'"));
+        assertTrue(result.getOutput().contains("Hello from my cool plugin!"));
     }
 
     private void writeString(File file, String string) throws IOException {

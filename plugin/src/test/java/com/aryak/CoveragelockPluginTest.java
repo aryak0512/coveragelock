@@ -15,7 +15,7 @@ class CoveragelockPluginTest {
     @Test void pluginRegistersATask() {
         // Create a test project and apply the plugin
         Project project = ProjectBuilder.builder().build();
-        project.getPlugins().apply("org.example.greeting");
+        project.getPlugins().apply("com.aryak.coveragelock");
 
         // Verify the result
         assertNotNull(project.getTasks().findByName("greeting"));

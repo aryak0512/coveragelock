@@ -25,8 +25,8 @@ dependencies {
 gradlePlugin {
     // Define the plugin
     val greeting = plugins.create("greeting") {
-        id = "org.example.greeting"
-        implementationClass = "org.example.CoveragelockPlugin"
+        id = "com.aryak.coveragelock"
+        implementationClass = "com.aryak.CoveragelockPlugin"
     }
 }
 
