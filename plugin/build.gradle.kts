@@ -24,9 +24,9 @@ dependencies {
 
 gradlePlugin {
     // Define the plugin
-    val greeting = plugins.create("greeting") {
-        id = "com.aryak.coveragelock"
-        implementationClass = "com.aryak.CoveragelockPlugin"
+    plugins.create("buildTimeTracker") {
+        id = "com.aryak.btt"
+        implementationClass = "com.aryak.BuildTimeTrackerPlugin"
     }
 }
 
