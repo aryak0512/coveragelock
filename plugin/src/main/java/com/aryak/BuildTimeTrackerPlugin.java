@@ -12,6 +12,18 @@ import org.gradle.api.Project;
 public class BuildTimeTrackerPlugin implements Plugin<Project> {
 
     public void apply(Project project) {
-        System.out.println("Build tracker plugin!");
+        project.getTasks().configureEach(task -> {
+            task.doFirst(action -> {
+                System.out.println(
+                        "Starting task: " + task.getName()
+                );
+            });
+
+            task.doLast(action -> {
+                System.out.println(
+                        "Finished task: " + task.getName()
+                );
+            });
+        });
     }
 }
