@@ -6,6 +6,9 @@ package com.aryak;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
 
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicLong;
+
 /**
  * The main plugin skeleton
  */
@@ -13,17 +16,19 @@ public class BuildTimeTrackerPlugin implements Plugin<Project> {
 
     public void apply(Project project) {
         project.getTasks().configureEach(task -> {
+            AtomicLong startTime = new AtomicLong();
             task.doFirst(action -> {
-                System.out.println(
-                        "Starting task: " + task.getName()
-                );
+                startTime.set(System.nanoTime());
+                System.out.println("[BTT] Starting task: " + task.getName());
+
+            });
+            task.doLast(action -> {
+                long endTime = System.nanoTime();
+                long duration = TimeUnit.NANOSECONDS.toMillis(endTime - startTime.get());
+                System.out.println("[BTT] Finished task: " + task.getName() + " | Duration: " + duration + " ms");
+
             });
 
-            task.doLast(action -> {
-                System.out.println(
-                        "Finished task: " + task.getName()
-                );
-            });
         });
     }
 }
